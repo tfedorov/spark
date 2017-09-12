@@ -11,6 +11,7 @@
 
     <properties>
         <spark.version>2.2.0</spark.version>
+        <elasticsearch.spark.version>5.5.1</elasticsearch.spark.version>
         <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
         <scala-library.version>2.11.8</scala-library.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,17 +24,25 @@
             <artifactId>scala-library</artifactId>
             <version>${scala-library.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib_2.11 -->
+
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_2.11</artifactId>
             <version>${spark.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch-spark-20_2.11</artifactId>
+            <version>${elasticsearch.spark.version}</version>
+        </dependency>
+
 
     </dependencies>
 
