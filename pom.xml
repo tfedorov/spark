@@ -43,7 +43,6 @@
             <version>${elasticsearch.spark.version}</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
