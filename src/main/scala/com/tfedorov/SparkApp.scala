@@ -19,35 +19,30 @@ object SparkApp extends App with Logging {
 
   private val sparkSession = SparkSessionExtractor()
   private val sc = sparkSession.sparkContext
-  private val testLocation = Option(args(0)).getOrElse("src\\main\\resources\\test.csv")
+  private val testLocation = Option(args(1)).getOrElse("src\\main\\resources\\test.csv")
+  private val trainLocation = Option(args(0)).getOrElse("src\\main\\resources\\train.csv")
 
   import sparkSession.implicits._
 
-  private val trainDF = sparkSession.read.format("csv")
+  val trainDF = sparkSession.read.format("csv")
+    .option("header", "true") // Use first line of all files as header
+    //.option("inferSchema", "true") // Automatically infer data types
+    .load(trainLocation)
+    .withColumn("label", 'label.cast(FloatType))
+    .as[SentenceLabel]
+
+  val pipeline: Pipeline = FreqPipelineBuilder()
+
+  val model = pipeline.fit(trainDF)
+
+  private val testDF = sparkSession.read.format("csv")
     .option("header", "true") // Use first line of all files as header
     //.option("inferSchema", "true") // Automatically infer data types
     .load(testLocation)
     .withColumn("label", 'label.cast(FloatType))
     .as[SentenceLabel]
 
-  trainDF.show()
-  /*
-    private val trainRDD = sc.parallelize(Seq(
-      SentenceLabel(DATA.TRAIN_1, 1.0f),
-      SentenceLabel(DATA.TRAIN_4, 4.0f)))
-*/
-
-  import sparkSession.implicits._
-
-  val pipeline: Pipeline = FreqPipelineBuilder()
-
-  val model = pipeline.fit(trainDF)
-
-  private val testRDD = sc.parallelize(Seq(
-    SentenceLabel(DATA.TRAIN_1, 1.0f),
-    SentenceLabel(DATA.TRAIN_4, 4.0f)))
-
-  val testResults = model.transform(testRDD.toDS())
+  val testResults = model.transform(testDF)
 
   testResults.show()
 
