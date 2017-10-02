@@ -16,6 +16,9 @@ object SparkApp extends App with Logging {
   private val sparkSession = SparkSessionExtractor()
   private val sc = sparkSession.sparkContext
 
+
+  val usersDF = sparkSession.read.format("csv").load("C:\\work\\workspace\\private\\spark\\src\\main\\resources\\test.csv")
+  usersDF.show()
   private val trainRDD = sc.parallelize(Seq(
     SentenceLabel(DATA.TRAIN_1, 1.0f),
     SentenceLabel(DATA.TRAIN_4, 4.0f)))
