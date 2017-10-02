@@ -10,7 +10,7 @@ class SparkAppTest extends Assert {
 
   @Test
   def testApp(): Unit = {
-    SparkApp.main(Array(""))
+    SparkApp.main(Array("src\\test\\resources\\test.csv"))
   }
 
 }
