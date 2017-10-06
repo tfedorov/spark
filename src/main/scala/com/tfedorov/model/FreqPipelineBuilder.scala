@@ -10,13 +10,13 @@ import org.apache.spark.ml.linalg.ListWordsFreq
   */
 object FreqPipelineBuilder {
 
-  def apply(): Pipeline = {
+  def apply(stopWords: Seq[String]): Pipeline = {
     val regexTokenizer = new RegexTokenizer()
       .setInputCol("sentence")
       .setOutputCol("allText")
       .setPattern("""[ ,.!?№()-/—\\"_$]""") // alternatively .setPattern("\\w+").setGaps(false)
 
-    val listWordsFreq = new ListWordsFreq()
+    val listWordsFreq = new ListWordsFreq(stopWords)
 
     val mlr = new LogisticRegression()
       .setMaxIter(10000)

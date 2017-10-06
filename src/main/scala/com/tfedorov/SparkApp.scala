@@ -31,7 +31,8 @@ object SparkApp extends App with Logging {
     .withColumn("label", 'label.cast(FloatType))
     .as[SentenceLabel]
 
-  val pipeline: Pipeline = FreqPipelineBuilder()
+  val stopWords = Seq("від", "навіть", "про", "які", "до", "та", "як", "із", "що", "під", "на", "не", "для", "за", "тому", "це")
+  val pipeline: Pipeline = FreqPipelineBuilder(stopWords)
 
   val model = pipeline.fit(trainDF)
 
@@ -45,7 +46,8 @@ object SparkApp extends App with Logging {
   val testResults = model.transform(testDF)
 
   testResults.show()
-
+  val res = testResults.select("allText").rdd.take(10).map(_.get(0))
+  res.foreach(print)
 
   sparkSession.close()
   log.trace("Finished")
