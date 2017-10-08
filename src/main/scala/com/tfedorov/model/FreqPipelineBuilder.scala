@@ -3,7 +3,7 @@ package com.tfedorov.model
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature._
-import org.apache.spark.ml.linalg.ListWordsFreq
+import org.apache.spark.ml.linalg.VocabFreqTransformer
 
 /**
   * Created by Taras_Fedorov on 4/14/2017.
@@ -11,24 +11,22 @@ import org.apache.spark.ml.linalg.ListWordsFreq
 object FreqPipelineBuilder {
 
   def apply(stopWords: Seq[String]): Pipeline = {
+
     val regexTokenizer = new RegexTokenizer()
       .setInputCol("sentence")
-      .setOutputCol("allText")
+      .setOutputCol("tokens")
       .setPattern("""[ ,.!?№()-/—\\"_$]""") // alternatively .setPattern("\\w+").setGaps(false)
 
-    val listWordsFreq = new ListWordsFreq(stopWords)
+    val listWordsFreq = new VocabFreqTransformer(stopWords)
 
     val mlr = new LogisticRegression()
-      .setMaxIter(10000)
+      .setMaxIter(10)
       .setRegParam(0.01)
       .setFeaturesCol("features")
       .setElasticNetParam(0.1)
       .setFamily("multinomial")
 
-    val sqlTrans = new SQLTransformer().setStatement(
-      "SELECT *, (label == prediction) AS Diff FROM __THIS__")
-
-    val pipeline = new Pipeline().setStages(Array(regexTokenizer, listWordsFreq, mlr, sqlTrans))
+    val pipeline = new Pipeline().setStages(Array(regexTokenizer, listWordsFreq, mlr))
     pipeline
   }
 

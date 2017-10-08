@@ -1,6 +1,6 @@
 package com.tfedorov.text
 
-object VocabularyFreq {
+object VocabFreq {
 
   def apply(input: Seq[String], vocabulary: Set[String]): Seq[Double] = {
 
