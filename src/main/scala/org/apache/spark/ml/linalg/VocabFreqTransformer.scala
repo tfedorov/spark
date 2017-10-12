@@ -1,6 +1,6 @@
 package org.apache.spark.ml.linalg
 
-import com.tfedorov.text.VocabFreq
+import com.tfedorov.model.VocabFreq
 import org.apache.spark.ml.Transformer
 import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.param.shared.{HasInputCol, HasOutputCol}
@@ -19,19 +19,13 @@ class VocabFreqTransformer(stopWords: Seq[String]) extends Transformer with HasI
 
     val changedUDF = udf { document: Seq[String] => Vectors.dense(VocabFreq(document, stopWords.toSet).toArray) }
 
-    import org.apache.spark.sql
-
     targetDS.withColumn("features", changedUDF(col("tokens")))
 
   }
 
-  override def copy(extra: ParamMap): Transformer
+  override def copy(extra: ParamMap): Transformer = throw new RuntimeException("Not implemented")
 
-  = ???
-
-  override def transformSchema(schema: StructType): StructType
-
-  = {
+  override def transformSchema(schema: StructType): StructType = {
     SchemaUtils.appendColumn(schema, "features", new VectorUDT(), false)
   }
 

@@ -8,25 +8,20 @@ import org.apache.spark.ml.linalg.VocabFreqTransformer
 /**
   * Created by Taras_Fedorov on 4/14/2017.
   */
-object FreqPipelineBuilder {
+object VocabFreqPipeLineBuilder {
 
   def apply(stopWords: Seq[String]): Pipeline = {
 
     val regexTokenizer = new RegexTokenizer()
-      .setInputCol("sentence")
+      .setInputCol("rawText")
       .setOutputCol("tokens")
       .setPattern("""[ ,.!?№()-/—\\"_$]""") // alternatively .setPattern("\\w+").setGaps(false)
 
-    val listWordsFreq = new VocabFreqTransformer(stopWords)
+    val vocabFreq = new VocabFreqTransformer(stopWords)
 
-    val mlr = new LogisticRegression()
-      .setMaxIter(10)
-      .setRegParam(0.01)
-      .setFeaturesCol("features")
-      .setElasticNetParam(0.1)
-      .setFamily("multinomial")
+    val mlr = new LogisticRegression().setMaxIter(1000).setTol(0.00001).setFamily("multinomial")
 
-    val pipeline = new Pipeline().setStages(Array(regexTokenizer, listWordsFreq, mlr))
+    val pipeline = new Pipeline().setStages(Array(regexTokenizer, vocabFreq, mlr))
     pipeline
   }
 

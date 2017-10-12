@@ -1,5 +1,6 @@
-package com.tfedorov.text
+package com.tfedorov.model
 
+import com.tfedorov.model.VocabFreq
 import org.testng.Assert._
 import org.testng.annotations.Test
 

@@ -1,4 +1,4 @@
-package com.tfedorov.text
+package com.tfedorov.model
 
 object VocabFreq {
 
