@@ -19,7 +19,10 @@ class VocabFreqTransformer(stopWords: Seq[String]) extends Transformer with HasI
 
     val changedUDF = udf { document: Seq[String] => Vectors.dense(VocabFreq(document, stopWords.toSet).toArray) }
 
+    import org.apache.spark.sql
+
     targetDS.withColumn("features", changedUDF(col("tokens")))
+
   }
 
   override def copy(extra: ParamMap): Transformer
