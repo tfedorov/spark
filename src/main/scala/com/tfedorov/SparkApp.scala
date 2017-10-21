@@ -14,7 +14,6 @@ case class RawText(id: Int, sentence: String)
   */
 object SparkApp extends App with Logging {
 
-
   log.trace("Started")
 
   private val sparkSession = SparkSessionExtractor()
@@ -37,7 +36,9 @@ object SparkApp extends App with Logging {
     .load(testLocation)
     .withColumn("label", 'label.cast(FloatType))
 
-  val stopWords = Seq("ся", "і", "від", "навіть", "про", "які", "до", "та", "як", "із", "що", "під", "на ", "не", "для", "за", "тому", "це")
+  val stopWords = Seq("що", "тому", "про", "які", "до", "та", "як", "із", "що", "під", "на", "не", "для", "за", "тому", "це")
+
+  //  val stopWords = Seq("ся", "і", "від", "навіть", "про", "які", "до", "та", "як", "із", "що", "під", "на ", "не", "для", "за", "тому", "це")
 
   val pipeline: Pipeline = VocabFreqPipeLineBuilder(stopWords)
   val model = pipeline.fit(trainDF)

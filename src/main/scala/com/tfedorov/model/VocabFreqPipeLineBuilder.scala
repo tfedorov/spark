@@ -13,11 +13,12 @@ object VocabFreqPipeLineBuilder {
   def apply(stopWords: Seq[String]): Pipeline = {
 
     val regexTokenizer = new RegexTokenizer()
-      .setInputCol("rawText")
+      .setInputCol("sentence")
       .setOutputCol("tokens")
       .setPattern("""[ ,.!?№()-/—\\"_$]""") // alternatively .setPattern("\\w+").setGaps(false)
 
     val vocabFreq = new VocabFreqTransformer(stopWords)
+
 
     val mlr = new LogisticRegression().setMaxIter(1000).setTol(0.00001).setFamily("multinomial")
 
