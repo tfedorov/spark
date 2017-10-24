@@ -36,6 +36,8 @@ object SparkApp extends App with Logging {
     .load(testLocation)
     .withColumn("label", 'label.cast(FloatType))
 
+ // testDF.rdd.map()
+
   val stopWords = Seq("що", "тому", "про", "які", "до", "та", "як", "із", "що", "під", "на", "не", "для", "за", "тому", "це")
 
   //  val stopWords = Seq("ся", "і", "від", "навіть", "про", "які", "до", "та", "як", "із", "що", "під", "на ", "не", "для", "за", "тому", "це")
