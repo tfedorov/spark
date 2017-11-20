@@ -18,23 +18,21 @@ object SparkApp extends App with Logging {
 
   private val sparkSession = SparkSessionExtractor()
   private val sc = sparkSession.sparkContext
-  private val testLocation = Option(args(1)).get
   private val trainLocation = Option(args(0)).get
-
-
-  import sparkSession.implicits._
+  private val testLocation = Option(args(1)).get
 
   val trainDF = sparkSession.read.format("csv")
     .option("header", "true") // Use first line of all files as header
-    //.option("inferSchema", "true") // Automatically infer data types
+    .option("header", "true") // Use first line of all files as header
+    .option("inferSchema", "true") // Automatically infer data types
     .load(trainLocation)
-    .withColumn("label", 'label.cast(FloatType))
+
 
   val testDF = sparkSession.read.format("csv")
     .option("header", "true") // Use first line of all files as header
-    //.option("inferSchema", "true") // Automatically infer data types
+    .option("inferSchema", "true") // Automatically infer data types
     .load(testLocation)
-    .withColumn("label", 'label.cast(FloatType))
+
 
   // testDF.rdd.map()
 
