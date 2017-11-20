@@ -5,14 +5,13 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.feature.SQLTransformer
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.types.FloatType
 
 case class RawText(id: Int, sentence: String)
 
 /**
   * Created by Taras_Fedorov on 9/8/2017.
   */
-object SparkApp extends App with Logging {
+object WordFreqApp extends App with Logging {
 
   log.trace("Started")
 
@@ -50,10 +49,10 @@ object SparkApp extends App with Logging {
 
   private val resTrain: DataFrame = sqlTrans.transform(trainResults)
   resTrain.show()
-  resTrain.select("features").foreach(rdd => println(rdd.get(0)))
+  //resTrain.select("features").foreach(rdd => println(rdd.get(0)))
   private val resTest: DataFrame = sqlTrans.transform(testResults)
   resTest.show()
-  resTest.select("features").foreach(rdd => println(rdd.get(0)))
+  //resTest.select("features").foreach(rdd => println(rdd.get(0)))
   sparkSession.close()
   log.trace("Finished")
 }

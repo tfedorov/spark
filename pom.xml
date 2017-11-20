@@ -91,7 +91,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.tfedorov.SparkApp</mainClass>
+                    <mainClass>com.tfedorov.WordFreqApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
